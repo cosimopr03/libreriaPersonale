@@ -1,4 +1,4 @@
-package model;
+package persistenza;
 
 /**
  * Eccezione Custom per identificare la presenza di un libro

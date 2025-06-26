@@ -1,4 +1,4 @@
-package Stretegy;
+package Strategy;
 
 import java.util.List;
 import model.Libro;
