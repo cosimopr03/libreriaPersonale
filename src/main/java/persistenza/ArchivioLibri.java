@@ -8,20 +8,118 @@ import model.Stato;
 public interface ArchivioLibri
 {
 
+    /**
+     * Aggiunge un nuovo libro alla collezione.
+     *
+     * @param libro  il {@link Libro} da inserire
+     * @throws IOException se si verifica un errore di I/O durante il salvataggio persistente
+     */
     void aggiungiLibro(Libro libro) throws IOException;
+
+    /**
+     * Rimuove un libro dalla collezione.
+     *
+     * @param libro  il {@link Libro} da eliminare
+     * @return {@code true} se il libro è stato effettivamente rimosso, {@code false} se non era presente
+     * @throws IOException se si verifica un errore di I/O durante l’aggiornamento del salvataggio
+     */
     boolean rimuoviLibro(Libro libro) throws IOException;
-    void modificaValutazione(String isbn,String valutazione) throws IOException;
-    void svuota()throws IOException;
-    void modificaStato(String isbn,String stato) throws IOException;
+
+    /**
+     * Aggiorna la valutazione assegnata a un libro.
+     *
+     * @param isbn         codice ISBN univoco del libro
+     * @param valutazione  nuova valutazione (es. “5”, “4.5”, “★ ★ ★ ★”, ecc.)
+     * @throws IOException se si verifica un errore di I/O durante il salvataggio delle modifiche
+     */
+    void modificaValutazione(String isbn, String valutazione) throws IOException;
+
+    /**
+     * Svuota completamente la libreria eliminando ogni libro.
+     *
+     * @throws IOException se si verifica un errore di I/O durante la rimozione o il salvataggio
+     */
+    void svuota() throws IOException;
+
+    /**
+     * Aggiorna lo stato di lettura di un libro (es. «da leggere», «in lettura», «letto»).
+     *
+     * @param isbn   codice ISBN del libro da aggiornare
+     * @param stato  nuovo stato di lettura
+     * @throws IOException se si verifica un errore di I/O durante il salvataggio delle modifiche
+     */
+    void modificaStato(String isbn, String stato) throws IOException;
+
+    /**
+     * Restituisce l’elenco completo dei libri presenti in libreria.
+     *
+     * @return lista immutabile di {@link Libro}
+     */
     List<Libro> getLibri();
+
+    /**
+     * Cerca libri il cui titolo contiene la stringa specificata (case-insensitive).
+     *
+     * @param titolo parte o intero del titolo da cercare
+     * @return lista di libri corrispondenti; può essere vuota se non ci sono risultati
+     */
     List<Libro> cerca(String titolo);
+
+    /**
+     * Salva lo stato corrente della libreria su memoria persistente
+     * (file, database, ecc.). Normalmente viene invocato internamente dai metodi
+     * mutatori, ma può essere richiamato esplicitamente.
+     */
     void salvaLibri();
+
+    /**
+     * Carica i libri precedentemente salvati, sostituendo l’elenco in memoria.
+     *
+     * @throws IOException se il file/database non è accessibile o è corrotto
+     */
     void caricaLibri() throws IOException;
+
+    /**
+     * Filtra i libri in base allo stato di lettura.
+     *
+     * @param stato lo {@link Stato} desiderato
+     * @return lista di libri che corrispondono allo stato indicato
+     */
     List<Libro> filtraPerStato(Stato stato);
-    List<Libro> filtraPerGenere(String genere) ;
-    List<Libro> filtraPeGenerePerStato(String genere,String stato) ;
+
+    /**
+     * Filtra i libri in base al genere letterario.
+     *
+     * @param genere il genere da filtrare (es. “Fantasy”, “Saggio”)
+     * @return lista di libri del genere specificato
+     */
+    List<Libro> filtraPerGenere(String genere);
+
+    /**
+     * Filtra i libri che soddisfano contemporaneamente genere e stato.
+     *
+     * @param genere genere letterario
+     * @param stato  stato di lettura
+     * @return lista dei libri che rispettano entrambi i criteri
+     */
+    List<Libro> filtraPeGenerePerStato(String genere, String stato);
+
+    /**
+     * Restituisce i libri ordinati alfabeticamente per autore.
+     *
+     * @return lista ordinata (nuova copia, non muta la collezione originale)
+     * @throws IOException se dovesse essere necessario accedere a risorse esterne
+     */
     List<Libro> ordinaPerAutore() throws IOException;
+
+    /**
+     * Restituisce i libri ordinati alfabeticamente per titolo.
+     *
+     * @return lista ordinata (nuova copia, non muta la collezione originale)
+     * @throws IOException se dovesse essere necessario accedere a risorse esterne
+     */
     List<Libro> ordinaPerTitolo() throws IOException;
+
 
 
 

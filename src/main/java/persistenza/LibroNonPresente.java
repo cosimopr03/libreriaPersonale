@@ -1,8 +1,8 @@
 package persistenza;
 
-public class libroNonPresente extends RuntimeException
+public class LibroNonPresente extends RuntimeException
 {
-    public libroNonPresente(String isbn)
+    public LibroNonPresente(String isbn)
     {
 
       super("Libro non presente, controllare ISBN: " + isbn);
