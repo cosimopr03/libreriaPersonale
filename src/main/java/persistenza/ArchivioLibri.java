@@ -35,7 +35,7 @@ public interface ArchivioLibri
      * @return {@code true} se il libro è stato effettivamente rimosso, {@code false} se non era presente
      * @throws IOException se si verifica un errore di I/O durante l’aggiornamento del salvataggio
      */
-    boolean rimuoviLibro(Libro libro) throws IOException;
+    boolean rimuoviLibro(String isbn) throws IOException;
 
     /**
      * Aggiorna la valutazione assegnata a un libro.
@@ -97,7 +97,7 @@ public interface ArchivioLibri
      * @param stato lo {@link Stato} desiderato
      * @return lista di libri che corrispondono allo stato indicato
      */
-    List<Libro> filtraPerStato(Stato stato) throws IOException;
+    List<Libro> filtraPerStato(String stato) throws IOException;
 
     /**
      * Filtra i libri in base al genere letterario.
@@ -114,7 +114,7 @@ public interface ArchivioLibri
      * @param stato  stato di lettura
      * @return lista dei libri che rispettano entrambi i criteri
      */
-    List<Libro> filtraPeGenerePerStato(String genere, String stato) throws IOException;
+    List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException;
 
     /**
      * Restituisce i libri ordinati alfabeticamente per autore.

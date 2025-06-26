@@ -1,12 +1,14 @@
 package persistenza;
 
 import Strategy.*;
+import model.Genere;
 import model.Libro;
 import model.Stato;
 import model.Valutazione;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static model.Stato.IN_LETTURA;
@@ -37,9 +39,20 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
 
     }
 
-    @Override
-    public boolean rimuoviLibro(Libro libro) throws IOException
+    public boolean rimuoviLibro(String isbn) throws IOException
     {
+        caricaLibri();
+        Iterator<Libro> it = libri.iterator();
+        while (it.hasNext())
+        {
+            if (it.next().getIsbn().equals(isbn))
+            {
+                it.remove();
+                salvaLibri();
+                return true;
+            }
+        }
+        salvaLibri();
         return false;
     }
 
@@ -113,22 +126,37 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
 
 
     @Override
-    public List<Libro> filtraPerStato(Stato stato)  throws IOException
+    public List<Libro> filtraPerStato(String stato)  throws IOException
     {
+        caricaLibri();
+        libri= new ArrayList<>(filtroStato.filtra(libri,stato) );
+        return new ArrayList<>(libri);
 
 
     }
 
     @Override
-    public List<Libro> filtraPerGenere(String genere)
+    public List<Libro> filtraPerGenere(String genere) throws IOException
     {
-        return List.of();
+        caricaLibri();
+        libri= new ArrayList<>(filtroGenere.filtra(libri,genere));
+        return new ArrayList<>(libri);
     }
 
     @Override
-    public List<Libro> filtraPeGenerePerStato(String genere, String stato)
+    public List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException
     {
-        return List.of();
+        caricaLibri();
+        List<Libro>filtraGe=new ArrayList<>(filtroGenere.filtra(libri,genere));
+        List<Libro> filtroSt = new ArrayList<>(filtroStato.filtra(libri,stato));
+        List<Libro> ret = new ArrayList<>();
+        for (Libro l: libri)
+            if (l.getStatoLibro().equals(Stato.valueOf(stato)) &&  l.getGenere().equals(Genere.valueOf(genere))&& (! ret.contains(l))  )
+                ret.add(l);
+
+
+        return ret;
+
     }
 
     @Override
