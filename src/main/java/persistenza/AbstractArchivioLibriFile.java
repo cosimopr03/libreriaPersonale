@@ -35,8 +35,6 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
         }
         libri.add(libro);
         salvaLibri();
-
-
     }
 
     public boolean rimuoviLibro(String isbn) throws IOException
