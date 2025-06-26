@@ -9,12 +9,24 @@ public interface ArchivioLibri
 {
 
     /**
-     * Aggiunge un nuovo libro alla collezione.
+     * Aggiunge un nuovo {@link Libro} alla collezione e ne salva
+     * immediatamente i dati su memoria di massa.
      *
-     * @param libro  il {@link Libro} da inserire
-     * @throws IOException se si verifica un errore di I/O durante il salvataggio persistente
+     * @param titolo   il titolo del libro
+     * @param autore   l’autore del libro
+     * @param editore  la casa editrice
+     * @param isbn     il codice ISBN univoco
+     * @param genere   il genere letterario (es. «Narrativa», «Saggio», …)
+     *
+     * @throws IOException se si verifica un errore di I/O durante il
+     *         salvataggio persistente
      */
-    void aggiungiLibro(Libro libro) throws IOException;
+    void aggiungiLibro(String titolo,
+                       String autore,
+                       String editore,
+                       String isbn,
+                       String genere) throws IOException;
+
 
     /**
      * Rimuove un libro dalla collezione.
@@ -85,7 +97,7 @@ public interface ArchivioLibri
      * @param stato lo {@link Stato} desiderato
      * @return lista di libri che corrispondono allo stato indicato
      */
-    List<Libro> filtraPerStato(Stato stato);
+    List<Libro> filtraPerStato(Stato stato) throws IOException;
 
     /**
      * Filtra i libri in base al genere letterario.
@@ -93,7 +105,7 @@ public interface ArchivioLibri
      * @param genere il genere da filtrare (es. “Fantasy”, “Saggio”)
      * @return lista di libri del genere specificato
      */
-    List<Libro> filtraPerGenere(String genere);
+    List<Libro> filtraPerGenere(String genere) throws IOException;
 
     /**
      * Filtra i libri che soddisfano contemporaneamente genere e stato.
@@ -102,7 +114,7 @@ public interface ArchivioLibri
      * @param stato  stato di lettura
      * @return lista dei libri che rispettano entrambi i criteri
      */
-    List<Libro> filtraPeGenerePerStato(String genere, String stato);
+    List<Libro> filtraPeGenerePerStato(String genere, String stato) throws IOException;
 
     /**
      * Restituisce i libri ordinati alfabeticamente per autore.

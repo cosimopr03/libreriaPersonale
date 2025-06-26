@@ -61,14 +61,14 @@ public class Libro
         return genere;
     }
 
-    public void setValutazione(String valutazione)
+    public void setValutazione(Valutazione valutazione)
     {
-        this.valutazione =  Valutazione.valueOf(valutazione);
+        this.valutazione =  valutazione;
     }
 
-    public void setStatoLibro(String statoLibro)
+    public void setStatoLibro(Stato statoLibro)
     {
-        this.statoLibro = Stato.valueOf(statoLibro);
+        this.statoLibro = statoLibro;
     }
 
     @Override
