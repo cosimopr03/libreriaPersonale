@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static model.Stato.IN_LETTURA;
 
 public abstract class AbstractArchivioLibriFile implements ArchivioLibri
 {
@@ -116,9 +115,15 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     }
 
     @Override
-    public List<Libro> cerca(String titolo)
+    public List<Libro> cerca(String titolo) throws IOException
     {
-        return List.of();
+        caricaLibri();
+        List<Libro>ret=new ArrayList<>();
+        for(Libro l: libri)
+            if(l.getTitolo().equals(titolo))
+                ret.add(l);
+
+        return new ArrayList<>(ret);
     }
 
 

@@ -75,7 +75,7 @@ public interface ArchivioLibri
      * @param titolo parte o intero del titolo da cercare
      * @return lista di libri corrispondenti; può essere vuota se non ci sono risultati
      */
-    List<Libro> cerca(String titolo);
+    List<Libro> cerca(String titolo)throws IOException;
 
     /**
      * Salva lo stato corrente della libreria su memoria persistente
