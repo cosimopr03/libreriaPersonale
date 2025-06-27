@@ -163,21 +163,21 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     }
 
     @Override
-    public List<Libro> ordinaPerAutore() throws IOException
+    public List<Libro> ordina(CriterioOrdinamento criterio) throws IOException
     {
         caricaLibri();
-        libri = new ArrayList<>(ordinamentoAutore.ordina(libri));
+        switch (criterio)
+        {
+            case AUTORE:
+                libri = new ArrayList<>(ordinamentoAutore.ordina(libri));
+                break;
+            case TITOLO:
+                libri = new ArrayList<>(ordinamentoTitolo.ordina(libri));
+                break;
+            default:
+                throw new IllegalArgumentException("Criterio non riconosciuto: " + criterio);
+        }
         salvaLibri();
         return new ArrayList<>(libri);
-    }
-
-    @Override
-    public List<Libro> ordinaPerTitolo() throws IOException
-    {
-        caricaLibri();
-        libri = new ArrayList<>(ordinamentoTitolo.ordina(libri));
-        salvaLibri();
-        return new ArrayList<>(libri);
-
     }
 }

@@ -117,24 +117,16 @@ public interface ArchivioLibri
     List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException;
 
     /**
-     * Restituisce i libri ordinati alfabeticamente per autore.
+     * Ordina la collezione di libri secondo il criterio specificato.
      *
-     * @return lista ordinata (nuova copia, non muta la collezione originale)
-     * @throws IOException se dovesse essere necessario accedere a risorse esterne
+     * @param criterio il criterio di ordinamento:
+     *                 -Autore
+     *                 -Titolo
+     * @return lista di {@code Libro} ordinata secondo il criterio.
+     * @throws IOException              errori di I/O durante caricamento o salvataggio.
+     * @throws IllegalArgumentException criterio non riconosciuto.
      */
-    List<Libro> ordinaPerAutore() throws IOException;
-
-    /**
-     * Restituisce i libri ordinati alfabeticamente per titolo.
-     *
-     * @return lista ordinata (nuova copia, non muta la collezione originale)
-     * @throws IOException se dovesse essere necessario accedere a risorse esterne
-     */
-    List<Libro> ordinaPerTitolo() throws IOException;
-
-
-
-
+    List<Libro> ordina(CriterioOrdinamento criterio) throws IOException;
 
 
 
