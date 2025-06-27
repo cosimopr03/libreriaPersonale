@@ -12,7 +12,6 @@ import java.util.*;
  * Implementazione concreta di ArchivioLibri che conserva i dati
  * in un file CSV chiamato <code>dati.csv</code> posizionato nella
  * cartella radice del progetto (working directory).
- * <p>
  * La classe fornisce unicamente i due metodi di persistenza richiesti:
  * {@link #salvaLibri()} e {@link #caricaLibri()}.
  */
