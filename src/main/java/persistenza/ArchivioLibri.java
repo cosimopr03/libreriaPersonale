@@ -92,29 +92,17 @@ public interface ArchivioLibri
     void caricaLibri() throws IOException;
 
     /**
-     * Filtra i libri in base allo stato di lettura.
+     * Ordina la collezione di libri secondo il criterio specificato.
      *
-     * @param stato lo {@link Stato} desiderato
-     * @return lista di libri che corrispondono allo stato indicato
+     * @param criterio il criterio di ordinamento:
+     *                 - {@link CriterioOrdinamento#AUTORE} Autore
+     *                 - {@link CriterioOrdinamento#TITOLO} Titolo
+     * @return lista di {@code Libro} ordinata secondo il criterio.
+     * @throws IOException              errori di I/O durante caricamento o salvataggio.
+     * @throws IllegalArgumentException criterio non riconosciuto.
      */
-    List<Libro> filtraPerStato(String stato) throws IOException;
+    List<Libro> filtra(CriterioFiltro criterio, String parametro) throws IOException;
 
-    /**
-     * Filtra i libri in base al genere letterario.
-     *
-     * @param genere il genere da filtrare (es. “Fantasy”, “Saggio”)
-     * @return lista di libri del genere specificato
-     */
-    List<Libro> filtraPerGenere(String genere) throws IOException;
-
-    /**
-     * Filtra i libri che soddisfano contemporaneamente genere e stato.
-     *
-     * @param genere genere letterario
-     * @param stato  stato di lettura
-     * @return lista dei libri che rispettano entrambi i criteri
-     */
-    List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException;
 
     /**
      * Ordina la collezione di libri secondo il criterio specificato.

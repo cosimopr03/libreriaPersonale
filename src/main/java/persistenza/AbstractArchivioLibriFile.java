@@ -128,25 +128,9 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
 
 
 
-    @Override
-    public List<Libro> filtraPerStato(String stato)  throws IOException
-    {
-        caricaLibri();
-        libri= new ArrayList<>(filtroStato.filtra(libri,stato) );
-        return new ArrayList<>(libri);
 
 
-    }
 
-    @Override
-    public List<Libro> filtraPerGenere(String genere) throws IOException
-    {
-        caricaLibri();
-        libri= new ArrayList<>(filtroGenere.filtra(libri,genere));
-        return new ArrayList<>(libri);
-    }
-
-    @Override
     public List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException
     {
         caricaLibri();
@@ -163,6 +147,24 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     }
 
     @Override
+    public List<Libro> filtra(CriterioFiltro criterio,String parametro) throws IOException {
+        caricaLibri();
+        List<Libro> risultato;
+        switch (criterio) {
+            case STATO:
+                risultato = filtroStato.filtra(libri, parametro);
+                break;
+            case GENERE:
+                risultato = filtroGenere.filtra(libri, parametro);
+                break;
+            default:
+                throw new IllegalArgumentException("Criterio di filtro non riconosciuto: " + criterio);
+        }
+        return new ArrayList<>(risultato);
+    }
+
+
+    @Override
     public List<Libro> ordina(CriterioOrdinamento criterio) throws IOException
     {
         caricaLibri();
@@ -175,7 +177,7 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
                 libri = new ArrayList<>(ordinamentoTitolo.ordina(libri));
                 break;
             default:
-                throw new IllegalArgumentException("Criterio non riconosciuto: " + criterio);
+                throw new IllegalArgumentException("Criterio non riconosciuto :  " + criterio);
         }
         salvaLibri();
         return new ArrayList<>(libri);
