@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static model.Stato.IN_LETTURA;
 
 public abstract class AbstractArchivioLibriFile implements ArchivioLibri
 {
@@ -116,32 +115,22 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     }
 
     @Override
-    public List<Libro> cerca(String titolo)
-    {
-        return List.of();
-    }
-
-
-
-    @Override
-    public List<Libro> filtraPerStato(String stato)  throws IOException
+    public List<Libro> cerca(String titolo) throws IOException
     {
         caricaLibri();
-        libri= new ArrayList<>(filtroStato.filtra(libri,stato) );
-        return new ArrayList<>(libri);
+        List<Libro>ret=new ArrayList<>();
+        for(Libro l: libri)
+            if(l.getTitolo().equals(titolo))
+                ret.add(l);
 
-
+        return new ArrayList<>(ret);
     }
 
-    @Override
-    public List<Libro> filtraPerGenere(String genere) throws IOException
-    {
-        caricaLibri();
-        libri= new ArrayList<>(filtroGenere.filtra(libri,genere));
-        return new ArrayList<>(libri);
-    }
 
-    @Override
+
+
+
+
     public List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException
     {
         caricaLibri();
@@ -158,21 +147,39 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     }
 
     @Override
-    public List<Libro> ordinaPerAutore() throws IOException
-    {
+    public List<Libro> filtra(CriterioFiltro criterio,String parametro) throws IOException {
         caricaLibri();
-        libri = new ArrayList<>(ordinamentoAutore.ordina(libri));
-        salvaLibri();
-        return new ArrayList<>(libri);
+        List<Libro> risultato;
+        switch (criterio) {
+            case STATO:
+                risultato = filtroStato.filtra(libri, parametro);
+                break;
+            case GENERE:
+                risultato = filtroGenere.filtra(libri, parametro);
+                break;
+            default:
+                throw new IllegalArgumentException("Criterio di filtro non riconosciuto: " + criterio);
+        }
+        return new ArrayList<>(risultato);
     }
 
+
     @Override
-    public List<Libro> ordinaPerTitolo() throws IOException
+    public List<Libro> ordina(CriterioOrdinamento criterio) throws IOException
     {
         caricaLibri();
-        libri = new ArrayList<>(ordinamentoTitolo.ordina(libri));
+        switch (criterio)
+        {
+            case AUTORE:
+                libri = new ArrayList<>(ordinamentoAutore.ordina(libri));
+                break;
+            case TITOLO:
+                libri = new ArrayList<>(ordinamentoTitolo.ordina(libri));
+                break;
+            default:
+                throw new IllegalArgumentException("Criterio non riconosciuto :  " + criterio);
+        }
         salvaLibri();
         return new ArrayList<>(libri);
-
     }
 }

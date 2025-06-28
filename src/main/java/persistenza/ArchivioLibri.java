@@ -75,7 +75,7 @@ public interface ArchivioLibri
      * @param titolo parte o intero del titolo da cercare
      * @return lista di libri corrispondenti; può essere vuota se non ci sono risultati
      */
-    List<Libro> cerca(String titolo);
+    List<Libro> cerca(String titolo)throws IOException;
 
     /**
      * Salva lo stato corrente della libreria su memoria persistente
@@ -92,49 +92,29 @@ public interface ArchivioLibri
     void caricaLibri() throws IOException;
 
     /**
-     * Filtra i libri in base allo stato di lettura.
+     * Ordina la collezione di libri secondo il criterio specificato.
      *
-     * @param stato lo {@link Stato} desiderato
-     * @return lista di libri che corrispondono allo stato indicato
+     * @param criterio il criterio di ordinamento:
+     *                 - {@link CriterioOrdinamento#AUTORE} Autore
+     *                 - {@link CriterioOrdinamento#TITOLO} Titolo
+     * @return lista di {@code Libro} ordinata secondo il criterio.
+     * @throws IOException              errori di I/O durante caricamento o salvataggio.
+     * @throws IllegalArgumentException criterio non riconosciuto.
      */
-    List<Libro> filtraPerStato(String stato) throws IOException;
+    List<Libro> filtra(CriterioFiltro criterio, String parametro) throws IOException;
+
 
     /**
-     * Filtra i libri in base al genere letterario.
+     * Ordina la collezione di libri secondo il criterio specificato.
      *
-     * @param genere il genere da filtrare (es. “Fantasy”, “Saggio”)
-     * @return lista di libri del genere specificato
+     * @param criterio il criterio di ordinamento:
+     *                 -Autore
+     *                 -Titolo
+     * @return lista di {@code Libro} ordinata secondo il criterio.
+     * @throws IOException              errori di I/O durante caricamento o salvataggio.
+     * @throws IllegalArgumentException criterio non riconosciuto.
      */
-    List<Libro> filtraPerGenere(String genere) throws IOException;
-
-    /**
-     * Filtra i libri che soddisfano contemporaneamente genere e stato.
-     *
-     * @param genere genere letterario
-     * @param stato  stato di lettura
-     * @return lista dei libri che rispettano entrambi i criteri
-     */
-    List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException;
-
-    /**
-     * Restituisce i libri ordinati alfabeticamente per autore.
-     *
-     * @return lista ordinata (nuova copia, non muta la collezione originale)
-     * @throws IOException se dovesse essere necessario accedere a risorse esterne
-     */
-    List<Libro> ordinaPerAutore() throws IOException;
-
-    /**
-     * Restituisce i libri ordinati alfabeticamente per titolo.
-     *
-     * @return lista ordinata (nuova copia, non muta la collezione originale)
-     * @throws IOException se dovesse essere necessario accedere a risorse esterne
-     */
-    List<Libro> ordinaPerTitolo() throws IOException;
-
-
-
-
+    List<Libro> ordina(CriterioOrdinamento criterio) throws IOException;
 
 
 
