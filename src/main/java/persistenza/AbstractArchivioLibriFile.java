@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public abstract class AbstractArchivioLibriFile implements ArchivioLibri
@@ -118,14 +119,22 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     public List<Libro> cerca(String titolo) throws IOException
     {
         caricaLibri();
-        List<Libro>ret=new ArrayList<>();
-        for(Libro l: libri)
-            if(l.getTitolo().equals(titolo))
-                ret.add(l);
-
-        return new ArrayList<>(ret);
+        String normTitolo = normalize(titolo);
+        return libri.stream()
+                .filter(l -> normalize(l.getTitolo()).equals(normTitolo))
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Rimuove spazi iniziali/finali, sostituisce più spazi con uno solo
+     * e mette tutto in minuscolo.
+     */
+    private String normalize(String s) {
+        if (s == null) return "";
+        return s.trim()               // toglie spazi estremi
+                .replaceAll("\\s+", " ") // collassa spazi ripetuti
+                .toLowerCase();          // minuscolo
+    }
 
 
 

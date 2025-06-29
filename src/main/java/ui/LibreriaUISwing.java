@@ -70,7 +70,7 @@ public class LibreriaUISwing extends AbstractUi
         cbFiltroValutazione = new JComboBox<>(vals.toArray(new String[0]));
         cbFiltroValutazione.setSelectedIndex(0);
 
-        btnResetFiltri = new JButton("↺ Reset Filtri");
+        btnResetFiltri = new JButton("↺ Reset ");
         btnResetFiltri.setFont(btnResetFiltri.getFont().deriveFont(Font.BOLD, 14f));
 
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
