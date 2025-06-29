@@ -1,16 +1,21 @@
 package main;
 
-
 import persistenza.ArchivioLibri;
 import persistenza.ArchivioLibriFileCsv;
+import ui.LibreriaUISwing;
 
-import java.io.IOException;
+import javax.swing.SwingUtilities;
 
 public class Main
 {
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
-        ArchivioLibri archiovio= new ArchivioLibriFileCsv();
-        System.out.println(archiovio.cerca("1984"));
+        // Crea l'archivio basato su CSV
+        ArchivioLibri archivio = new ArchivioLibriFileCsv();
+        // Istanzia la UI e le passa l'archivio
+        LibreriaUISwing ui = new LibreriaUISwing();
+        ui.setArchivio(archivio);
+        // Avvia la GUI nel thread Event Dispatch Thread
+        SwingUtilities.invokeLater(ui::avvia);
     }
 }
