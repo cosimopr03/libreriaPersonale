@@ -28,7 +28,7 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     public void aggiungiLibro(String titolo,String autore, String editore, String isbn,String genere) throws IOException
     {
         caricaLibri();
-        Libro libro = new Libro.Builder(titolo, autore, editore, isbn,genere).build();
+        Libro libro = new Libro(titolo, autore, editore, isbn,genere);
         if (libri.contains(libro))
         {
             throw new LibroGiaPresenteException(libro.getIsbn());
