@@ -7,9 +7,7 @@ import model.Stato;
 import model.Valutazione;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -25,10 +23,16 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
 
 
     @Override
-    public void aggiungiLibro(String titolo,String autore, String editore, String isbn,String genere) throws IOException
+    public void aggiungiLibro(String titolo, String autoreSingolo, String editore, String isbn, String genere) throws IOException
     {
         caricaLibri();
-        Libro libro = new Libro(titolo, autore, editore, isbn,genere);
+        // Converti autoreSingolo in Set<String>
+        Set<String> autori = new TreeSet<>();
+        for (String a : autoreSingolo.split(","))
+        {
+            autori.add(a.trim());
+        }
+        Libro libro = new Libro(titolo, autori, editore, isbn, genere);
         if (libri.contains(libro))
         {
             throw new LibroGiaPresenteException(libro.getIsbn());

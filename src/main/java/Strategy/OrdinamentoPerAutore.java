@@ -12,7 +12,10 @@ public class OrdinamentoPerAutore implements OrdinamentoStrategy
     @Override
     public List<Libro> ordina(List<Libro> libri)
     {
-        libri.sort(Comparator.comparing(Libro::getAutore, String.CASE_INSENSITIVE_ORDER));
+        libri.sort(Comparator.comparing(
+                libro -> libro.getAutori().iterator().next(),  // primo autore
+                String.CASE_INSENSITIVE_ORDER
+        ));
         return libri;
     }
 }

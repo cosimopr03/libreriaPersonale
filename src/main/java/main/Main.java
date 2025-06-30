@@ -5,9 +5,14 @@ import persistenza.ArchivioLibriFileCsv;
 import ui.LibreriaUISwing;
 
 import javax.swing.SwingUtilities;
+import java.io.IOException;
 
 public class Main
 {
+
+
+
+
     public static void main(String[] args)
     {
         // Crea l'archivio basato su CSV
@@ -18,4 +23,6 @@ public class Main
         // Avvia la GUI nel thread Event Dispatch Thread
         SwingUtilities.invokeLater(ui::avvia);
     }
+
 }
+
