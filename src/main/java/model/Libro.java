@@ -1,61 +1,81 @@
 package model;
 
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class Libro
-{
+public class Libro {
     /**
-     *  campi obligatori
+     * Campi obbligatori
      */
     private final String titolo;
-    private final String autore;
+    private final Set<String> autori;
     private final String editore;
     private final String isbn;
-    private  final Genere genere;
+    private final Genere genere;
 
     /**
-     * Campi che presentano un'inzializzazione di default e dunque facoltativi
+     * Campi facoltativi (con inizializzazione successiva)
      */
     private Valutazione valutazione;
     private Stato statoLibro;
 
-
-    private Libro(Builder builder)
+    /**
+     * Costruttore
+     */
+    public Libro(String titolo, Set<String> autori, String editore, String isbn, String genere)
     {
-        this.titolo      = builder.titolo;
-        this.autore      = builder.autore;
-        this.editore     = builder.editore;
-        this.isbn        = builder.isbn;
-        this.valutazione = builder.valutazione;
-        this.statoLibro  = builder.statoLibro;
-        this.genere = builder.genere;
-    }//Libro
+        this.titolo = Objects.requireNonNull(titolo, "Titolo non può essere null").toUpperCase();
+        this.editore = Objects.requireNonNull(editore, "Editore non può essere null").toUpperCase();
+        this.isbn = Objects.requireNonNull(isbn, "ISBN non può essere null").toUpperCase();
+        this.genere = Genere.valueOf(Objects.requireNonNull(genere, "Genere non può essere null"));
 
-    // Getter e  setter (solo i mutabili hanno anche il setter)
+        // Validazione e normalizzazione autori
+        Objects.requireNonNull(autori, "Set di autori non può essere null");
+        if (autori.isEmpty()) {
+            throw new IllegalArgumentException("Il libro deve avere almeno un autore");
+        }
+
+        this.autori = new TreeSet<>();
+        for (String autore : autori)
+        {
+            this.autori.add(Objects.requireNonNull(autore, "Autore nullo trovato").toUpperCase());
+        }
+        this.statoLibro=Stato.NON_LETTO;
+        this.valutazione=Valutazione.nonValutato;
+    }
+
+    // Getter e setter (solo i mutabili hanno il setter)
     public String getTitolo()
     {
         return titolo;
     }
-    public String getAutore()
+
+    public Set<String> getAutori()
     {
-        return autore;
+        return new TreeSet<>(autori); // ritorna una copia per evitare modifiche esterne
     }
+
     public String getEditore()
     {
         return editore;
     }
+
     public String getIsbn()
     {
         return isbn;
     }
+
     public Valutazione getValutazione()
     {
         return valutazione;
     }
+
     public Stato getStatoLibro()
     {
         return statoLibro;
     }
+
     public Genere getGenere()
     {
         return genere;
@@ -63,7 +83,7 @@ public class Libro
 
     public void setValutazione(Valutazione valutazione)
     {
-        this.valutazione =  valutazione;
+        this.valutazione = valutazione;
     }
 
     public void setStatoLibro(Stato statoLibro)
@@ -75,98 +95,33 @@ public class Libro
     public String toString()
     {
         return String.format(
-                "Libro{titolo='%s', autore='%s', editore='%s', isbn='%s', valutazione='%s', stato=%s , genere='%s'}",
-                titolo, autore, editore, isbn,
+                "Libro{titolo='%s', autori='%s', editore='%s', isbn='%s', valutazione='%s', stato=%s, genere='%s'}",
+                titolo,
+                String.join(", ", autori),
+                editore,
+                isbn,
                 valutazione == null ? "non valutato" : valutazione,
-                statoLibro
-                ,genere
+                statoLibro == null ? "non definito" : statoLibro,
+                genere
         );
     }
 
     /**
-     *
-     * @param o
-     * @return sono ugauli se hanno lo stesso isbn
+     * Due libri sono uguali se hanno lo stesso ISBN
      */
     @Override
     public boolean equals(Object o)
     {
-        if(o ==null) return false;
+        if (o == null) return false;
         if (this == o) return true;
         if (!(o instanceof Libro)) return false;
         Libro libro = (Libro) o;
-        return libro.isbn.equals(isbn);
+        return isbn.equals(libro.isbn);
     }
 
-    /***
-     *
-     * @return Hash code
-     */
     @Override
     public int hashCode()
     {
         return Objects.hash(isbn);
-    }
-
-    /**
-     * Costruisce un'istanza di Libro utilizzando un oggetto Builder
-     */
-
-    public static class Builder
-    {
-        // campi obbligatori
-        private final String titolo;
-        private final String autore;
-        private final String editore;
-        private final String isbn;
-        private final Genere genere;
-
-        // campi opzionali con default
-        private Valutazione valutazione = Valutazione.nonValutato;
-        private Stato statoLibro = Stato.NON_LETTO;
-
-        /**
-         *  Questi campi NON possono essere null o non inizializzati
-         * @param titolo
-         * @param autore
-         * @param editore
-         * @param isbn
-         * @param genere
-         */
-        public Builder(String titolo, String autore, String editore, String isbn, String genere)
-        {
-            this.titolo  = Objects.requireNonNull(titolo,  "Titolo non può essere null").toUpperCase();
-            this.autore  = Objects.requireNonNull(autore,  "Autore non può essere null").toUpperCase();
-            this.editore = Objects.requireNonNull(editore, "Editore non può essere null").toUpperCase();
-            this.isbn    = Objects.requireNonNull(isbn,    "ISBN non può essere null").toUpperCase();
-            this.genere= Genere.valueOf(Objects.requireNonNull(genere,"genere non può essere null"));
-        }
-        public Builder valutazione(Valutazione valutazione)
-        {
-            this.valutazione = valutazione;
-            return this;
-        }
-
-        public Builder statoLibro(Stato stato)
-        {
-            this.statoLibro = stato;
-            return this;
-        }
-
-
-        /**
-         * Prima di creare l'oggetto, viene effettuata una validazione sull'ISBN, che deve contenere
-         * esattamente 10 o 13 cifre numeriche.
-         * @return una nuova istanza di {Libro} correttamente inizializzata
-         * @throws IllegalArgumentException se l'ISBN non è composto da 10 o 13 cifre numeriche
-         */
-        public Libro build()
-        {
-            if (! isbn.matches("\\d{10}|\\d{13}"))
-            {
-                throw new IllegalArgumentException("ISBN non valido: deve avere 10 o 13 cifre numeriche");
-            }
-            return new Libro(this);
-        }
     }
 }

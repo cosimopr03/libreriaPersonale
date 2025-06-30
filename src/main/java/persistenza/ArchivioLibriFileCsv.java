@@ -7,6 +7,7 @@ import model.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Implementazione concreta di ArchivioLibri che conserva i dati
@@ -28,7 +29,6 @@ public class ArchivioLibriFileCsv extends AbstractArchivioLibriFile
     public void salvaLibri()
     {
         try {
-            // crea eventuali cartelle (in genere nessuna, ma per sicurezza)
             Path parent = FILE_PATH.getParent();
             if (parent != null) Files.createDirectories(parent);
 
@@ -41,7 +41,7 @@ public class ArchivioLibriFileCsv extends AbstractArchivioLibriFile
 
                 // intestazione
                 writer.writeNext(new String[]{
-                        "isbn", "titolo", "autore", "editore",
+                        "isbn", "titolo", "autori", "editore",
                         "valutazione", "stato", "genere"
                 });
 
@@ -50,7 +50,7 @@ public class ArchivioLibriFileCsv extends AbstractArchivioLibriFile
                     writer.writeNext(new String[]{
                             nullable(l.getIsbn()),
                             nullable(l.getTitolo()),
-                            nullable(l.getAutore()),
+                            String.join(",", l.getAutori()), // serializzazione autori
                             nullable(l.getEditore()),
                             enumOrBlank(l.getValutazione()),
                             enumOrBlank(l.getStatoLibro()),
@@ -63,15 +63,16 @@ public class ArchivioLibriFileCsv extends AbstractArchivioLibriFile
         }
     }
 
+
     /* ------------------------------------------------------------------ */
     /*                              CARICA                                */
     /* ------------------------------------------------------------------ */
     @Override
-    public void caricaLibri() throws IOException {
-        // Se il file non esiste, lo creo con la sola intestazione
+    public void caricaLibri() throws IOException
+    {
         if (Files.notExists(FILE_PATH)) {
             Files.writeString(FILE_PATH,
-                    "isbn;titolo;autore;editore;valutazione;stato;genere\n");
+                    "isbn;titolo;autori;editore;valutazione;stato;genere\n");
         }
 
         try (CSVReader reader = new CSVReaderBuilder(
@@ -86,7 +87,6 @@ public class ArchivioLibriFileCsv extends AbstractArchivioLibriFile
             while ((rec = reader.readNext()) != null) {
                 line++;
 
-                // salta intestazione
                 if (line == 1 && rec.length > 0 && "isbn".equalsIgnoreCase(rec[0]))
                     continue;
 
@@ -95,31 +95,33 @@ public class ArchivioLibriFileCsv extends AbstractArchivioLibriFile
                     continue;
                 }
 
-                // parsing enum con gestione errori
-                Valutazione val;
-                Stato sta;
-                Genere gen;
                 try {
-                    val = rec[4].isBlank() ? null : Valutazione.valueOf(rec[4].trim());
-                    sta = rec[5].isBlank() ? null : Stato.valueOf(rec[5].trim());
-                    gen = rec[6].isBlank() ? null : Genere.valueOf(rec[6].trim());
-                } catch (IllegalArgumentException e) {
-                    System.err.println("Enum non valida alla riga " + line + ": " + e.getMessage());
-                    continue;
-                }
+                    // parsing autori
+                    Set<String> autori = Arrays.stream(rec[2].split(","))
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .collect(Collectors.toCollection(TreeSet::new));
 
-                try {
-                    Libro libro = new Libro.Builder(
-                            rec[1], // titolo
-                            rec[2], // autore
-                            rec[3], // editore
-                            rec[0], // isbn
-                            gen == null ? null : gen.name() // builder accetta string
-                    )
-                            .valutazione(val)
-                            .statoLibro(sta)
-                            .build();
+                    // parsing enum
+                    Valutazione val = rec[4].isBlank() ? null : Valutazione.valueOf(rec[4].trim());
+                    Stato sta = rec[5].isBlank() ? null : Stato.valueOf(rec[5].trim());
+                    Genere gen = rec[6].isBlank() ? null : Genere.valueOf(rec[6].trim());
+
+                    // costruzione libro
+                    Libro libro = new Libro(
+                            rec[1],     // titolo
+                            autori,     // autori
+                            rec[3],     // editore
+                            rec[0],     // isbn
+                            rec[6]      // genere come stringa
+                    );
+
+                    // campi opzionali
+                    if (val != null) libro.setValutazione(val);
+                    if (sta != null) libro.setStatoLibro(sta);
+
                     libri.add(libro);
+
                 } catch (Exception e) {
                     System.err.println("Errore creazione libro alla riga " + line + ": " + e.getMessage());
                 }

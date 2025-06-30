@@ -103,7 +103,6 @@ public interface ArchivioLibri
      */
     List<Libro> filtra(CriterioFiltro criterio, String parametro) throws IOException;
 
-
     /**
      * Ordina la collezione di libri secondo il criterio specificato.
      *

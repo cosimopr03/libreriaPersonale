@@ -1,25 +1,15 @@
 package main;
 
-
-<<<<<<< HEAD
+import facade.LibreriaUiFacade;
 import model.Libro;
-=======
-import persistenza.ArchivioLibri;
-import persistenza.ArchivioLibriFileCsv;
-
-import java.io.IOException;
->>>>>>> develop
 
 public class Main
 {
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
-<<<<<<< HEAD
-        
+        LibreriaUiFacade.getInstance().avvia();
 
-=======
-        ArchivioLibri archiovio= new ArchivioLibriFileCsv();
-        System.out.println(archiovio.cerca("1984"));
->>>>>>> develop
     }
+
 }
+
