@@ -4,7 +4,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Libro {
+public class Libro
+{
     /**
      * Campi obbligatori
      */
@@ -25,9 +26,14 @@ public class Libro {
      */
     public Libro(String titolo, Set<String> autori, String editore, String isbn, String genere)
     {
+        if (! isbn.matches("\\d{10}|\\d{13}")  || isbn==null)
+        {
+            throw new IllegalArgumentException("ISBN non valido: deve avere 10 o 13 cifre numeriche");
+        }
+
         this.titolo = Objects.requireNonNull(titolo, "Titolo non può essere null").toUpperCase();
         this.editore = Objects.requireNonNull(editore, "Editore non può essere null").toUpperCase();
-        this.isbn = Objects.requireNonNull(isbn, "ISBN non può essere null").toUpperCase();
+        this.isbn = isbn.toUpperCase();
         this.genere = Genere.valueOf(Objects.requireNonNull(genere, "Genere non può essere null"));
 
         // Validazione e normalizzazione autori
@@ -122,6 +128,10 @@ public class Libro {
     @Override
     public int hashCode()
     {
+
         return Objects.hash(isbn);
     }
+
+
+
 }

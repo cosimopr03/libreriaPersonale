@@ -141,9 +141,6 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     }
 
 
-
-
-
     public List<Libro> filtraPerGenerePerStato(String genere, String stato) throws IOException
     {
         caricaLibri();
