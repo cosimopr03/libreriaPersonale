@@ -31,8 +31,6 @@ Permette di aggiungere, rimuovere, modificare e cercare volumi, con persistenza 
 
 - JDK 21+
 - Maven (o altro build tool a piacere)
-- Plugin PlantUML (per generazione diagrammi)
-
 ---
 
 ## 🚀 Installazione
