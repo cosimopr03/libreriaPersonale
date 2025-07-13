@@ -5,11 +5,11 @@ Un’applicazione desktop in Java per organizzare e tenere traccia della tua col
 Permette di aggiungere, rimuovere, modificare e cercare volumi, con persistenza su CSV e interfaccia grafica Swing.
 
 ---
-
+## il file jar è in : libreriaPersonale/src/libreriaPersonale_jar 
 ## 📋 Caratteristiche
 
 - **CRUD completo**: aggiunta, rimozione, modifica (stato di lettura e valutazione).
-- **Ricerca** per titolo (case-insensitive, ricerca parziale).
+- **Ricerca** per titolo (case-insensitive).
 - **Filtri** per stato di lettura e valutazione.
 - **Ordinamento** per autore e per titolo (Strategy Pattern).
 - **Persistenza** su file CSV tramite OpenCSV.
@@ -29,13 +29,12 @@ Permette di aggiungere, rimuovere, modificare e cercare volumi, con persistenza 
 
 ## 🛠️ Prerequisiti
 
-- JDK 21+
+- JDK 21
 - Maven (o altro build tool a piacere)
 ---
 
-## 🚀 Installazione
 
-1. Clona il repository:
+Clona il repository:
    ```bash
    git clone https://github.com/tuo-username/gestore-libreria-personale.git
    cd gestore-libreria-personale
