@@ -62,7 +62,8 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
     public void modificaValutazione(String isbn, String valutazione) throws IOException
     {
         caricaLibri();
-        for(Libro l: libri) {
+        for(Libro l: libri)
+        {
             if (l.getIsbn().equals(isbn))
             {
                 switch (valutazione.trim().toLowerCase())
@@ -72,6 +73,7 @@ public abstract class AbstractArchivioLibriFile implements ArchivioLibri
                     case "3", "tre" -> l.setValutazione(Valutazione.tre);
                     case "4", "quattro" -> l.setValutazione(Valutazione.quattro);
                     case "5", "cinque" -> l.setValutazione(Valutazione.cinque);
+                    case "Non valutato " -> l.setValutazione(Valutazione.nonValutato);
                     default -> l.setValutazione(Valutazione.nonValutato);
                 }
                 ;

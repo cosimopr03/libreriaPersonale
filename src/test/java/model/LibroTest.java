@@ -8,6 +8,9 @@ import java.util.Set;
 public class LibroTest
 {
 
+    /**
+     * Verifica la corretta inizializzazione del libro con valori validi.
+     */
     @Test
     void testCostruttore()
     {
@@ -20,6 +23,9 @@ public class LibroTest
         assertEquals(Stato.NON_LETTO, libro.getStatoLibro());
     }
 
+    /**
+     * Verifica che la valutazione possa essere impostata correttamente.
+     */
     @Test
     void testSetValutazione()
     {
@@ -28,6 +34,9 @@ public class LibroTest
         libro.setValutazione(Valutazione.cinque);
         assertEquals(Valutazione.cinque, libro.getValutazione());
     }
+    /**
+     * Verifica che lo stato del libro possa essere modificato correttamente.
+     */
     @Test
     void testSetStato()
     {
@@ -37,6 +46,9 @@ public class LibroTest
         libro.setStatoLibro(Stato.LETTO);
         assertEquals(Stato.LETTO, libro.getStatoLibro());
     }
+    /**
+     * Verifica che il costruttore lanci NullPointerException se il titolo è null.
+     */
     @Test
     void testTitoloNullLanciaEccezione()
     {
@@ -44,6 +56,9 @@ public class LibroTest
             new Libro(null, Set.of("George Orwell"), "Mondadori","1234567890123", "DISTOPIA");;
         });
     }
+    /**
+     * Verifica che venga lanciata IllegalArgumentException se l'ISBN è troppo corto.
+     */
     @Test
     void testEccezioneIsbnCorto()
     {
@@ -51,6 +66,9 @@ public class LibroTest
             new Libro("1984", Set.of("George Orwell"), "Mondadori", "123", "DISTOPIA");
         });
     }
+    /**
+     * Verifica che venga lanciata IllegalArgumentException se l'ISBN è troppo lungo.
+     */
     @Test
     void testEccezioneIsbnLungo()
     {
@@ -58,12 +76,18 @@ public class LibroTest
             new Libro("1984", Set.of("George Orwell"), "Mondadori", "15353637383737323", "DISTOPIA");
         });
     }
+    /**
+     * Verifica che venga lanciata IllegalArgumentException se l'ISBN è null.
+     */
     void testEccezioneIsbnNull()
     {
         assertThrows(IllegalArgumentException.class, () -> {
             new Libro("1984", Set.of("George Orwell"), "Mondadori", null, "DISTOPIA");
         });
     }
+    /**
+     * Verifica che il costruttore lanci NullPointerException se gli autori sono null.
+     */
     @Test
     void testAutoriNullLanciaEccezione()
     {
@@ -71,6 +95,9 @@ public class LibroTest
             new Libro("1984", null, "Mondadori","1234567890123", "DISTOPIA");
         });
     }
+    /**
+     * Verifica che venga lanciata IllegalArgumentException se l'insieme degli autori è vuoto.
+     */
     @Test
     void testAutoriVuotoLanciaEccezione()
     {
@@ -78,6 +105,10 @@ public class LibroTest
             new Libro("1984", Set.of(), "Mondadori","1234567890123", "DISTOPIA");
         });
     }
+    /**
+     * Verifica che venga lanciata IllegalArgumentException se il genere non è valido.
+     */
+
     @Test
     void testGenereNonValidoLanciaEccezione()
     {
@@ -85,6 +116,9 @@ public class LibroTest
             new Libro("1984", Set.of("George Orwell"), "Mondadori","1234567890123", "GenereNonVAlido");
         });
     }
+    /**
+     * Verifica il corretto comportamento del metodo equals in base all'ISBN.
+     */
     @Test
     void testEquals()
     {
@@ -94,6 +128,9 @@ public class LibroTest
         assertEquals(libro1, libro2);
         assertNotEquals(libro1, libro3);
     }
+    /**
+     * Verifica che due libri con lo stesso ISBN abbiano lo stesso hashCode.
+     */
     @Test
     void testHashCodeStessoISBN()
     {
@@ -103,6 +140,9 @@ public class LibroTest
         assertEquals(libro1.hashCode(), libro2.hashCode(), "Due libri con stesso ISBN devono avere stesso hashCode");
     }
 
+    /**
+     * Verifica che due libri con ISBN diversi abbiano hashCode diversi.
+     */
     @Test
     void testHashCodeISBNDiversi()
     {

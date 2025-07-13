@@ -372,7 +372,7 @@ public class LibreriaUISwing extends AbstractUi
                         new String[]{"1", "2", "3", "4", "5", "Non valutato"},
                         "3"
                 );
-                if (nv != null && !"Non valutato".equals(nv))
+                if (nv != null )
                 {
                     archivio.modificaValutazione(isbn, nv);
                 }
