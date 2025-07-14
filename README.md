@@ -20,7 +20,7 @@ Permette di aggiungere, rimuovere, modificare e cercare volumi, con persistenza 
 - **Pattern**:
     - Strategy (ordinamento, filtri)
     - Singleton/Facade (`LibreriaUiFacade`)
-    - Bridge (layer UI ↔ archivio)
+    - Bridge (libreria UI ↔ archivio)
 - **GUI** in Swing con:
     - `JTable` per la visualizzazione
     - `JDialog` personalizzati per aggiunta/modifica
@@ -30,7 +30,6 @@ Permette di aggiungere, rimuovere, modificare e cercare volumi, con persistenza 
 ## 🛠️ Prerequisiti
 
 - JDK 21
-- Maven (o altro build tool a piacere)
 ---
 
 
